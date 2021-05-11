@@ -1,0 +1,16 @@
+.buttonCenter {
+    margin-left: 40%;
+    margin-bottom: 3%;
+    
+}
+
+.adjustingContainers {
+    display: flex;
+    justify-content: center;
+}
+
+.aligning {
+    display: flex;
+    justify-content: center;
+}
+

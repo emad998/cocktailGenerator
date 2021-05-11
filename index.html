@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Import Google Icon Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Cocktail Generator</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="blue lighten-1 heightAdjustment centering">
+        <h3 class="center-align">Cocktail Generator</h3>
+        <button
+          class="btn waves-effect waves-light buttonCenter buttonClick"
+          type="submit"
+          name="action"
+        >
+          Generate A Cocktail
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+      <div class="hidingDiv">
+        <h5 class="center-align nameTag">Name:</h5>
+
+        <h5 class="center-align alcoholTag">Alcoholic:</h5>
+        <h5 class="center-align categoryTag">Category:</h5>
+
+        <div class="adjustingContainers">
+          <div class="ingredients cyan lighten-1">
+            <h6>Ingredients</h6>
+          </div>
+
+          <div class="measure green lighten-1">
+            <h6>Measure</h6>
+          </div>
+        </div>
+
+        <div>
+          <p class="recipe center-align"></p>
+        </div>
+
+        <div class="aligning">
+          <img class="responsive-img circle imaging" src="" />
+        </div>
+      </div>
+    </div>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+      const nameTag = document.querySelector(".nameTag");
+      const alcoholTag = document.querySelector(".alcoholTag");
+      const categoryTag = document.querySelector(".categoryTag");
+      const ingredients = document.querySelector(".ingredients");
+      const measure = document.querySelector(".measure");
+      const recipe = document.querySelector(".recipe");
+      const imaging = document.querySelector(".imaging");
+      const hidingDiv = document.querySelector(".hidingDiv");
+      const button = document.querySelector(".buttonClick");
+
+      console.log(hidingDiv.style.display);
+
+      button.addEventListener("click", grabData);
+
+      if (hidingDiv) {
+        hidingDiv.style.display = "none";
+      }
+
+      function grabData() {
+        fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+          .then((rawData) => rawData.json())
+          .then((mainData) => {
+            nameTag.textContent = "Name: " + mainData.drinks[0].strDrink;
+            alcoholTag.textContent =
+              "Alcoholic: " + mainData.drinks[0].strAlcoholic;
+            categoryTag.textContent =
+              "Category: " + mainData.drinks[0].strCategory;
+
+            for (x in mainData.drinks[0]) {
+              for (var i = 0; i <= 20; i++) {
+                if (x == "strIngredient" + i) {
+                  let p = document.createElement("p");
+                  p.textContent = mainData.drinks[0][x];
+                  ingredients.appendChild(p);
+                }
+              }
+            }
+
+            for (x in mainData.drinks[0]) {
+              for (var i = 0; i <= 20; i++) {
+                if (x == "strMeasure" + i) {
+                  let p = document.createElement("p");
+                  p.textContent = mainData.drinks[0][x];
+                  measure.appendChild(p);
+                }
+              }
+            }
+
+            recipe.textContent = mainData.drinks[0].strInstructions;
+
+            imaging.setAttribute("src", mainData.drinks[0].strDrinkThumb);
+
+            hidingDiv.style.display = "block";
+          });
+      }
+    </script>
+  </body>
+</html>
